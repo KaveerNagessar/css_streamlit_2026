@@ -1108,16 +1108,15 @@ with tabs[4]:
     st.subheader("Research Visits & Collaborations")
     st.write("Details of institutional visits and collaborative research projects.")
     
-    import pandas as pd
+import pandas as pd
     import pydeck as pdk
     
     # -----------------------------
     # Data Setup
     # -----------------------------
-    # Coordinates for the institutions
     locations = pd.DataFrame([
         {
-            "name": "Home Institution (Gauteng, SA)",
+            "name": "University of Pretoria (Gauteng, SA)",
             "lat": -25.7479, 
             "lon": 28.2293,
             "color": [255, 0, 0, 200]  # Red
@@ -1130,7 +1129,6 @@ with tabs[4]:
         }
     ])
     
-    # Create the connection line (Arc)
     arc_data = pd.DataFrame([{
         "start_lat": -25.7479,
         "start_lon": 28.2293,
@@ -1139,9 +1137,8 @@ with tabs[4]:
     }])
     
     # -----------------------------
-    # Plotly / PyDeck Map
+    # PyDeck Map
     # -----------------------------
-    
     view_state = pdk.ViewState(
         latitude=-7.0,
         longitude=34.0,
@@ -1149,7 +1146,6 @@ with tabs[4]:
         pitch=40
     )
     
-    # Layer for the institutions (Dots)
     scatter_layer = pdk.Layer(
         "ScatterplotLayer",
         locations,
@@ -1159,7 +1155,6 @@ with tabs[4]:
         pickable=True
     )
     
-    # Layer for the collaboration link (Arc)
     arc_layer = pdk.Layer(
         "ArcLayer",
         arc_data,
@@ -1170,11 +1165,13 @@ with tabs[4]:
         get_width=5,
     )
     
+    # If the map is blank on the website, change map_style to None 
+    # or use "pdk.map_styles.SATELLITE"
     r = pdk.Deck(
         layers=[scatter_layer, arc_layer],
         initial_view_state=view_state,
         tooltip={"text": "{name}"},
-        map_style="mapbox://styles/mapbox/light-v9"
+        map_style="mapbox://styles/mapbox/navigation-day-v1" 
     )
     
     st.pydeck_chart(r)
@@ -1254,4 +1251,5 @@ with tabs[7]:
 with tabs[8]:
     st.subheader("Get in Touch")
     st.write("📍 Department of Physics, University of Pretoria")
+
     st.markdown("📧 **Email:** [nagessar.kaveer@gmail.com](mailto:nagessar.kaveer@gmail.com)")
