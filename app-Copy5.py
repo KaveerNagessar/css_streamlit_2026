@@ -1074,7 +1074,7 @@ with tabs[2]:
             
             pub_id = pub.get("author_pub_id")
             link = f"https://scholar.google.com/citations?view_op=view_citation&user={scholar_id}&citation_for_view={pub_id}"
-            st.link_button("w={View on Google Scholar", link)
+            st.link_button("View on Google Scholar", link)
 
             
 
@@ -1168,11 +1168,11 @@ with tabs[4]:
     # If the map is blank on the website, change map_style to None 
     # or use "pdk.map_styles.SATELLITE"
     r = pdk.Deck(
-        layers=[scatter_layer, arc_layer],
-        initial_view_state=view_state,
-        tooltip={"text": "{name}"},
-        map_style="mapbox://styles/mapbox/navigation-day-v1" 
-    )
+            layers=[scatter_layer, arc_layer],
+            initial_view_state=view_state,
+            tooltip={"text": "{name}"},
+            map_style=None  # This removes the Mapbox requirement
+        )
     
     st.pydeck_chart(r)
     
@@ -1253,4 +1253,5 @@ with tabs[8]:
     st.write("📍 Department of Physics, University of Pretoria")
 
     st.markdown("📧 **Email:** [nagessar.kaveer@gmail.com](mailto:nagessar.kaveer@gmail.com)")
+
 
