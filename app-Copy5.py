@@ -71,7 +71,7 @@ with st.sidebar:
     # 1. Google Scholar Button
     st.markdown(f"""
         <a href="https://scholar.google.com/citations?user={scholar_id}" class="social-btn" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Google_Scholar_logo.svg" class="icon-img">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Google_Scholar_logo.svg" class="icon-img"> 
             Google Scholar
         </a>
     """, unsafe_allow_html=True)
@@ -1029,7 +1029,7 @@ with tabs[2]:
     st.caption("Data live-synced from Google Scholar (Fetching full metadata...)")
     
     all_pubs = author_data.get("publications", [])
-    all_pubs.sort(key=lambda x: x.get("bib", {}).get("pub_year", 0), reverse=True)
+    all_pubs.sort(key=lambda x: x.get("bib", {}).get("pub_year", 0), reverse=True) 
     
     for pub in all_pubs:
         # CRITICAL: This line fetches the missing authors and extra details
@@ -1240,6 +1240,7 @@ with tabs[8]:
     st.write("📍 Department of Physics, University of Pretoria")
 
     st.markdown("📧 **Email:** [nagessar.kaveer@gmail.com](mailto:nagessar.kaveer@gmail.com)")
+
 
 
 
