@@ -10,22 +10,6 @@ st.set_page_config(
     layout="wide"
 )
 
-# 2. DATA FETCHING FUNCTION (Cached for 24 hours)
-import streamlit as st
-from scholarly import scholarly, ProxyGenerator
-
-# Google Scholar aggressively blocks standard requests. 
-# Free proxies are unreliable; consider a ScraperAPI or similar for production.
-@st.cache_resource
-def setup_proxy():
-    pg = ProxyGenerator()
-    # If you have a ScraperAPI key: pg.ScraperAPI('YOUR_KEY')
-    # Otherwise, try a free proxy (might be slow/unstable):
-    success = pg.FreeProxies() 
-    if success:
-        scholarly.use_proxy(pg)
-
-setup_proxy()
 
 @st.cache_data(ttl=86400)
 def get_scholar_data(scholar_id):
@@ -1277,6 +1261,7 @@ with tabs[8]:
     st.write("📍 Department of Physics, University of Pretoria")
 
     st.markdown("📧 **Email:** [nagessar.kaveer@gmail.com](mailto:nagessar.kaveer@gmail.com)")
+
 
 
 
