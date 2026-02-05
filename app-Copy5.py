@@ -3,7 +3,7 @@ from scholarly import scholarly
 import pandas as pd
 
 
-# 1. PAGE CONFIGURATION (Must be the very first Streamlit command)
+# 1. PAGE CONFIGURATION
 st.set_page_config(
     page_title="Kaveer Nagessar | Researcher Profile",
     page_icon="⚛️",
@@ -1250,6 +1250,7 @@ with tabs[8]:
     st.write("📍 Department of Physics, University of Pretoria")
 
     st.markdown("📧 **Email:** [nagessar.kaveer@gmail.com](mailto:nagessar.kaveer@gmail.com)")
+
 
 
 
