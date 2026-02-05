@@ -1065,7 +1065,7 @@ with tabs[2]:
                     # ... rest of your UI code ...
             
             except Exception as e:
-                st.error(f"Could not load details for one publication: {e}"))
+                st.error(f"Could not load details for one publication: {e}")
 
             
 
@@ -1244,6 +1244,7 @@ with tabs[8]:
     st.write("📍 Department of Physics, University of Pretoria")
 
     st.markdown("📧 **Email:** [nagessar.kaveer@gmail.com](mailto:nagessar.kaveer@gmail.com)")
+
 
 
 
