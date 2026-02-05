@@ -16,12 +16,11 @@ st.set_page_config(
 def get_scholar_data(scholar_id):
     try:
         author = scholarly.search_author_id(scholar_id)
-        full_author = scholarly.fill(author, sections=['basics', 'indices', 'counts'])
+        full_author = scholarly.fill(sections=['basics', 'indices', 'counts'])
         return full_author
     except Exception as e:
         # Fallback data so the site doesn't look broken
         return {
-            "name": "Kaveer Nagessar",
             "citedby": 5,  # Manual update required occasionally
             "hindex": 1,
             "i10index": 0,
@@ -1265,6 +1264,7 @@ with tabs[8]:
     st.write("📍 Department of Physics, University of Pretoria")
 
     st.markdown("📧 **Email:** [nagessar.kaveer@gmail.com](mailto:nagessar.kaveer@gmail.com)")
+
 
 
 
