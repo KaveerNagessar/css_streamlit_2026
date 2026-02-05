@@ -31,11 +31,6 @@ def get_scholar_data(scholar_id):
 scholar_id = "GIBw1REAAAAJ"
 author_data = get_scholar_data(scholar_id)
 
-if author_data:
-    st.title(author_data.get('name', 'Author Profile'))
-    st.write(f"Citations: {author_data.get('citedby', 0)}")
-else:
-    st.warning("No data found. Check the ID or try again later.")
 
 # 3. SIDEBAR (Professional Social & Contact)
 with st.sidebar:
@@ -1264,6 +1259,7 @@ with tabs[8]:
     st.write("📍 Department of Physics, University of Pretoria")
 
     st.markdown("📧 **Email:** [nagessar.kaveer@gmail.com](mailto:nagessar.kaveer@gmail.com)")
+
 
 
 
