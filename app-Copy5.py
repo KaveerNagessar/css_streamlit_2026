@@ -1066,7 +1066,7 @@ with tabs[2]:
             "year": 2025,
             "title": "Electrical Characterization of Defects in a Commercial Silicon Bipolar Junction Transistor Under Electron Irradiation",
             "authors": "K Nagessar",
-            "source": "University of Pretoria (Honours Thesis/Project)"
+            "source": "University of Pretoria (Undergrad Thesis/Project)"
         },
         {
             "year": 2023,
@@ -1282,6 +1282,7 @@ with tabs[8]:
     st.write("📍 Department of Physics, University of Pretoria")
 
     st.markdown("📧 **Email:** [nagessar.kaveer@gmail.com](mailto:nagessar.kaveer@gmail.com)")
+
 
 
 
