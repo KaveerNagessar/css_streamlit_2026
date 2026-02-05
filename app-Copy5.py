@@ -2,14 +2,14 @@ import streamlit as st
 from scholarly import scholarly
 import pandas as pd
 
-# 1. PAGE CONFIGURATION (Must be the very first Streamlit command)
+# 1. PAGE CONFIGURATION 
 st.set_page_config(
     page_title="Kaveer Nagessar | Researcher Profile",
     page_icon="⚛️",
     layout="wide"
 )
 
-# 2. DATA FETCHING FUNCTION (Cached for 24 hours)
+# 2. DATA FETCHING FUNCTION (Cached for 24 hours from Google Scholar)
 @st.cache_data(ttl=86400)
 def get_scholar_data(scholar_id):
     try:
@@ -22,7 +22,7 @@ def get_scholar_data(scholar_id):
 scholar_id = "GIBw1REAAAAJ"
 author_data = get_scholar_data(scholar_id)
 
-# 3. SIDEBAR (Professional Social & Contact)
+# 3. SIDEBAR (Professional Social & Contact) with Google Scholar, ResearchGate and OrcidID
 with st.sidebar:
     st.image("https://ui-avatars.com/api/?name=Kaveer+Nagessar&background=0D8ABC&color=fff&size=200", width=150)
     st.title("Kaveer Nagessar")
@@ -34,7 +34,7 @@ with st.sidebar:
     
     st.divider()
 
-    # --- PROFESSIONAL BUTTONS SECTION ---
+    # PROFESSIONAL BUTTONS SECTION 
     # CSS for uniform, sleek buttons
     button_style = """
         <style>
@@ -106,7 +106,7 @@ with st.sidebar:
     st.divider()
 
 
-# --- 4. MAIN HEADER & STATS ---
+# 4. MAIN HEADER & STATS
 st.title("Academic & Research Portfolio")
 
 if author_data:
@@ -123,7 +123,7 @@ if author_data:
 
     st.divider()
 
-# --- 5. CONTENT TABS SECTION ---
+# 5. CONTENT TABS SECTION 
 tabs = st.tabs([
     "👤 About Me", 
     "🔬 Research Focus", 
@@ -860,13 +860,13 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
     
 
     
-    # Option A: Interactive Native Streamlit Chart
+    # Interactive Streamlit Chart
     st.subheader("Interactive DLTS Signal")
     # Set T as index for the native chart
     chart_df = df.set_index('T')
     st.line_chart(chart_df)
     
-    # Option B: Matplotlib (Better for Publications/Labels)
+    # Matplotlib (Better for Publications/Labels)
     st.subheader("Final DLTS Spectrum of a Silicon BJT")
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.plot(df['T'], df['RW4'], color='red', label='RW4 Signal')
@@ -877,9 +877,11 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
     
     st.pyplot(fig)
     
-    # Option C: Data Table
+    # Data Table of DLTS data
     with st.expander("Show Raw Data Table"):
         st.dataframe(df, use_container_width=True)
+
+    # 3D Model of the Boron-Vaccancy Defect in Silicon
 
     import numpy as np
     import plotly.graph_objects as go
@@ -1111,9 +1113,7 @@ with tabs[4]:
     import pandas as pd
     import pydeck as pdk
     
-    # -----------------------------
     # Data Setup
-    # -----------------------------
     locations = pd.DataFrame([
         {
             "name": "University of Pretoria (Gauteng, SA)",
@@ -1136,9 +1136,8 @@ with tabs[4]:
         "end_lon": 39.5932
     }])
     
-    # -----------------------------
+
     # PyDeck Map
-    # -----------------------------
     view_state = pdk.ViewState(
         latitude=-7.0,
         longitude=34.0,
@@ -1253,5 +1252,6 @@ with tabs[8]:
     st.write("📍 Department of Physics, University of Pretoria")
 
     st.markdown("📧 **Email:** [nagessar.kaveer@gmail.com](mailto:nagessar.kaveer@gmail.com)")
+
 
 
