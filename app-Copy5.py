@@ -1038,45 +1038,54 @@ with tabs[2]:
     st.subheader("Full Publication List")
     st.caption("Data live-synced from Google Scholar (Fetching full metadata...)")
 
+    if not author_data or "publications" not in author_data:
+        st.error("Publication data not available. Google Scholar may have blocked the request.")
+        st.stop()
+
     all_pubs = author_data.get("publications", [])
-    all_pubs.sort(key=lambda x: x.get("bib", {}).get("pub_year", 0), reverse=True)
+    all_pubs.sort(
+        key=lambda x: int(x.get("bib", {}).get("pub_year", 0) or 0),
+        reverse=True
+    )
 
     for pub in all_pubs:
-        # CRITICAL: This line fetches the missing authors and extra details
-        # Note: This may slow down the app if you have 100+ publications
-        full_pub = scholarly.fill(pub) 
+        # Fetch missing metadata (authors, abstract, venue, etc.)
+        full_pub = scholarly.fill(pub)
         bib = full_pub.get("bib", {})
 
-        # Format title and year for the expander
-        year = bib.get('pub_year', 'N/A')
-        title = bib.get('title', 'Unknown Title')
+        year = bib.get("pub_year", "N/A")
+        title = bib.get("title", "Unknown Title")
 
         with st.expander(f"({year}) {title}"):
-            # Full author list is now available in bib.get('author')
-            authors = bib.get('author', 'K. Nagessar').replace(" and ", ", ")
+            authors = bib.get("author", "K. Nagessar").replace(" and ", ", ")
             st.write(f"**Authors:** {authors}")
 
-            # Additional details now available after .fill()
-            venue = bib.get('journal', bib.get('venue', 'Publication Venue'))
+            venue = bib.get("journal") or bib.get("venue") or "Publication Venue"
             st.write(f"**Source:** *{venue}*")
 
             col1, col2, col3 = st.columns(3)
             with col1:
-                if bib.get('volume'): st.write(f"**Volume:** {bib['volume']}")
+                if bib.get("volume"):
+                    st.write(f"**Volume:** {bib['volume']}")
             with col2:
-                if bib.get('number'): st.write(f"**Issue:** {bib['number']}")
+                if bib.get("number"):
+                    st.write(f"**Issue:** {bib['number']}")
             with col3:
-                if bib.get('pages'): st.write(f"**Pages:** {bib['pages']}")
+                if bib.get("pages"):
+                    st.write(f"**Pages:** {bib['pages']}")
 
-            if bib.get('abstract'):
+            if bib.get("abstract"):
                 st.write("**Abstract:**")
-                st.write(bib.get('abstract'))
+                st.write(bib["abstract"])
 
             pub_id = pub.get("author_pub_id")
-            link = f"https://scholar.google.com/citations?view_op=view_citation&user={scholar_id}&citation_for_view={pub_id}"
-            st.link_button("w={View on Google Scholar", link)
-            st.link_button("View on Google Scholar", link)
+            link = (
+                f"https://scholar.google.com/citations"
+                f"?view_op=view_citation&user={scholar_id}"
+                f"&citation_for_view={scholar_id}:{pub_id}"
+            )
 
+            st.link_button("View on Google Scholar", link)
 
 
 
@@ -1253,4 +1262,5 @@ with tabs[8]:
     st.write("📍 Department of Physics, University of Pretoria")
 
     st.markdown("📧 **Email:** [nagessar.kaveer@gmail.com](mailto:nagessar.kaveer@gmail.com)")
+
 
