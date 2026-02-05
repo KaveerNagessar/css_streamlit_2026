@@ -3,20 +3,6 @@ from scholarly import scholarly
 import pandas as pd
 
 
-
-@st.cache_data
-def fetch_full_author_data(scholar_id):
-    # 1. Get the basic profile
-    author = scholarly.search_author_id(scholar_id)
-
-    author = scholarly.fill(author, sections=['basics', 'publications'])
-    
-    return author
-
-# Use the ID you provided
-scholar_id = "GIBw1REAAAAJ"
-author_data = fetch_full_author_data(scholar_id)
-
 # 1. PAGE CONFIGURATION (Must be the very first Streamlit command)
 st.set_page_config(
     page_title="Kaveer Nagessar | Researcher Profile",
@@ -1264,6 +1250,7 @@ with tabs[8]:
     st.write("📍 Department of Physics, University of Pretoria")
 
     st.markdown("📧 **Email:** [nagessar.kaveer@gmail.com](mailto:nagessar.kaveer@gmail.com)")
+
 
 
 
