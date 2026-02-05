@@ -1037,36 +1037,41 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
 with tabs[2]:
     st.subheader("Full Publication List")
     
-    # 1. Check if data actually exists
-    if not author_data or "publications" not in author_data:
-        st.warning("Publication data is currently unavailable.")
+    if not author_data or "publications" not in author_data or len(author_data["publications"]) == 0:
+        st.warning("No publications found. Try refreshing or check the Scholar ID.")
     else:
-        st.caption("Data live-synced from Google Scholar")
-        
         all_pubs = author_data.get("publications", [])
-        # Sort by year (descending)
+        # Sort by year
         all_pubs.sort(key=lambda x: x.get("bib", {}).get("pub_year", 0), reverse=True)
         
-        for pub in all_pubs:
-            # 2. Add a try-except block for the fill() operation
-            try:
-                # Note: Consider moving this .fill() to a cached function outside the loop 
-                # to prevent the app from lagging on every interaction.
-                full_pub = scholarly.fill(pub) 
-                bib = full_pub.get("bib", {})
-                
-                year = bib.get('pub_year', 'N/A')
-                title = bib.get('title', 'Unknown Title')
-                
-                with st.expander(f"({year}) {title}"):
-                    # Formatting logic...
-                    authors = bib.get('author', 'N/A').replace(" and ", ", ")
-                    st.write(f"**Authors:** {authors}")
-                    # ... rest of your UI code ...
-            
-            except Exception as e:
-                st.error(f"Could not load details for one publication: {e}")
+        st.info(f"Showing {len(all_pubs)} publications. Expanding a title will fetch full details.")
 
+        for pub in all_pubs:
+            bib = pub.get("bib", {})
+            year = bib.get('pub_year', 'N/A')
+            title = bib.get('title', 'Unknown Title')
+            
+            # Use the expander to trigger the "fill" only when needed
+            with st.expander(f"({year}) {title}"):
+                # Only fill if the abstract is missing (save time/requests)
+                if 'abstract' not in bib:
+                    with st.spinner("Fetching details..."):
+                        pub = scholarly.fill(pub)
+                        bib = pub.get("bib", {})
+
+                authors = bib.get('author', 'N/A').replace(" and ", ", ")
+                st.write(f"**Authors:** {authors}")
+                
+                venue = bib.get('journal', bib.get('venue', 'Publication Venue'))
+                st.write(f"**Source:** *{venue}*")
+                
+                if bib.get('abstract'):
+                    st.write("**Abstract:**")
+                    st.write(bib.get('abstract'))
+                
+                pub_id = pub.get("author_pub_id")
+                link = f"https://scholar.google.com/citations?view_op=view_citation&user={scholar_id}&citation_for_view={pub_id}"
+                st.link_button("View on Google Scholar", link)
             
 
             
@@ -1244,6 +1249,7 @@ with tabs[8]:
     st.write("📍 Department of Physics, University of Pretoria")
 
     st.markdown("📧 **Email:** [nagessar.kaveer@gmail.com](mailto:nagessar.kaveer@gmail.com)")
+
 
 
 
