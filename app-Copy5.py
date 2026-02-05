@@ -1049,7 +1049,7 @@ with tabs[2]:
     
     # 1. HARDCODED FALLBACK DATA (Because Scholar can be not working sometimes)
 
-        manual_pubs = [
+    manual_pubs = [
         {
             "year": 2025,
             "title": "Advanced thermal and magnetic materials for high-power and high-temperature applications: a comprehensive review",
@@ -1282,6 +1282,7 @@ with tabs[8]:
     st.write("📍 Department of Physics, University of Pretoria")
 
     st.markdown("📧 **Email:** [nagessar.kaveer@gmail.com](mailto:nagessar.kaveer@gmail.com)")
+
 
 
 
