@@ -1047,41 +1047,64 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
 with tabs[2]:
     st.subheader("Full Publication List")
     
-    if not author_data or "publications" not in author_data or len(author_data["publications"]) == 0:
-        st.warning("No publications found. Try refreshing or check the Scholar ID.")
-    else:
+    # 1. HARDCODED FALLBACK DATA (Because Scholar can be unreliable)
+    # This ensures your profile always looks professional
+    manual_pubs = [
+        {
+            "year": 2025,
+            "title": "Advanced thermal and magnetic materials for high-power and high-temperature applications: a comprehensive review",
+            "authors": "WG Mengesha, K Nagessar",
+            "source": "Discover Materials 5"
+        },
+        {
+            "year": 2025,
+            "title": "A critical review on electronic materials properties and multifunctional applications",
+            "authors": "WG Mengesha, K Nagessar",
+            "source": "Discover Materials 5 (1)"
+        },
+        {
+            "year": 2025,
+            "title": "Electrical Characterization of Defects in a Commercial Silicon Bipolar Junction Transistor Under Electron Irradiation",
+            "authors": "K Nagessar",
+            "source": "University of Pretoria (Honours Thesis/Project)"
+        },
+        {
+            "year": 2023,
+            "title": "Applications and Topics of Physics in Surgery",
+            "authors": "K Nagessar",
+            "source": "Alternate Horizons"
+        },
+        {
+            "year": 2020,
+            "title": "Importance of Astronomy in Our Education Systems",
+            "authors": "K Nagessar",
+            "source": "CosmosNow Online Magazine"
+        }
+    ]
+
+    # 2. LOGIC: Try live data first, then manual
+    if author_data and "publications" in author_data and len(author_data["publications"]) > 0:
         all_pubs = author_data.get("publications", [])
-        # Sort by year
         all_pubs.sort(key=lambda x: x.get("bib", {}).get("pub_year", 0), reverse=True)
         
-        st.info(f"Showing {len(all_pubs)} publications. Expanding a title will fetch full details.")
-
+        st.success("Fetched live data from Google Scholar.")
         for pub in all_pubs:
             bib = pub.get("bib", {})
-            year = bib.get('pub_year', 'N/A')
-            title = bib.get('title', 'Unknown Title')
-            
-            # Use the expander to trigger the "fill" only when needed
-            with st.expander(f"({year}) {title}"):
-                # Only fill if the abstract is missing (save time/requests)
-                if 'abstract' not in bib:
-                    with st.spinner("Fetching details..."):
-                        pub = scholarly.fill(pub)
-                        bib = pub.get("bib", {})
-
-                authors = bib.get('author', 'N/A').replace(" and ", ", ")
-                st.write(f"**Authors:** {authors}")
-                
-                venue = bib.get('journal', bib.get('venue', 'Publication Venue'))
-                st.write(f"**Source:** *{venue}*")
-                
-                if bib.get('abstract'):
-                    st.write("**Abstract:**")
-                    st.write(bib.get('abstract'))
-                
-                pub_id = pub.get("author_pub_id")
-                link = f"https://scholar.google.com/citations?view_op=view_citation&user={scholar_id}&citation_for_view={pub_id}"
-                st.link_button("View on Google Scholar", link)
+            with st.expander(f"({bib.get('pub_year', 'N/A')}) {bib.get('title')}"):
+                st.write(f"**Authors:** {bib.get('author')}")
+                st.write(f"**Source:** {bib.get('journal', 'Publication')}")
+                if st.button("Fetch Abstract", key=pub.get('author_pub_id')):
+                    with st.spinner("Loading..."):
+                        full_pub = scholarly.fill(pub)
+                        st.write(full_pub.get('bib', {}).get('abstract', 'No abstract available.'))
+    else:
+        # 3. SHOW MANUAL DATA IF SCHOLAR FAILS
+        st.warning("Google Scholar is currently unreachable. Showing archived publication list.")
+        for p in manual_pubs:
+            with st.expander(f"({p['year']}) {p['title']}"):
+                st.write(f"**Authors:** {p['authors']}")
+                st.write(f"**Source:** *{p['source']}*")
+                st.markdown(f"[Search on Google Scholar](https://scholar.google.com/scholar?q={p['title'].replace(' ', '+')})")
             
 
             
@@ -1259,6 +1282,7 @@ with tabs[8]:
     st.write("📍 Department of Physics, University of Pretoria")
 
     st.markdown("📧 **Email:** [nagessar.kaveer@gmail.com](mailto:nagessar.kaveer@gmail.com)")
+
 
 
 
