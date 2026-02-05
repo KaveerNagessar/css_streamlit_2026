@@ -27,12 +27,12 @@ def get_scholar_data(scholar_id):
             "publications": [] 
         }
 
-# Your Google Scholar ID
+# Google Scholar ID
 scholar_id = "GIBw1REAAAAJ"
 author_data = get_scholar_data(scholar_id)
 
 
-# 3. SIDEBAR (Professional Social & Contact)
+# 3. SIDEBAR 
 with st.sidebar:
     st.image("https://ui-avatars.com/api/?name=Kaveer+Nagessar&background=0D8ABC&color=fff&size=200", width=150)
     st.title("Kaveer Nagessar")
@@ -870,13 +870,13 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
     
 
     
-    # Option A: Interactive Native Streamlit Chart
+    # Interactive Native Streamlit Chart
     st.subheader("Interactive DLTS Signal")
     # Set T as index for the native chart
     chart_df = df.set_index('T')
     st.line_chart(chart_df)
     
-    # Option B: Matplotlib (Better for Publications/Labels)
+    # Matplotlib (Better for Publications/Labels)
     st.subheader("Final DLTS Spectrum of a Silicon BJT")
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.plot(df['T'], df['RW4'], color='red', label='RW4 Signal')
@@ -887,7 +887,7 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
     
     st.pyplot(fig)
     
-    # Option C: Data Table
+    # Data Table
     with st.expander("Show Raw Data Table"):
         st.dataframe(df, use_container_width=True)
 
@@ -1282,6 +1282,7 @@ with tabs[8]:
     st.write("📍 Department of Physics, University of Pretoria")
 
     st.markdown("📧 **Email:** [nagessar.kaveer@gmail.com](mailto:nagessar.kaveer@gmail.com)")
+
 
 
 
