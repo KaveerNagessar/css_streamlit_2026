@@ -2,14 +2,14 @@ import streamlit as st
 from scholarly import scholarly
 import pandas as pd
 
-# 1. PAGE CONFIGURATION 
+# 1. PAGE CONFIGURATION (Must be the very first Streamlit command)
 st.set_page_config(
     page_title="Kaveer Nagessar | Researcher Profile",
     page_icon="⚛️",
     layout="wide"
 )
 
-# 2. DATA FETCHING FUNCTION (Cached for 24 hours from Google Scholar)
+# 2. DATA FETCHING FUNCTION (Cached for 24 hours)
 @st.cache_data(ttl=86400)
 def get_scholar_data(scholar_id):
     try:
@@ -22,7 +22,7 @@ def get_scholar_data(scholar_id):
 scholar_id = "GIBw1REAAAAJ"
 author_data = get_scholar_data(scholar_id)
 
-# 3. SIDEBAR (Professional Social & Contact) with Google Scholar, ResearchGate and OrcidID
+# 3. SIDEBAR (Professional Social & Contact)
 with st.sidebar:
     st.image("https://ui-avatars.com/api/?name=Kaveer+Nagessar&background=0D8ABC&color=fff&size=200", width=150)
     st.title("Kaveer Nagessar")
@@ -34,7 +34,7 @@ with st.sidebar:
     
     st.divider()
 
-    # PROFESSIONAL BUTTONS SECTION 
+    # --- PROFESSIONAL BUTTONS SECTION ---
     # CSS for uniform, sleek buttons
     button_style = """
         <style>
@@ -71,7 +71,7 @@ with st.sidebar:
     # 1. Google Scholar Button
     st.markdown(f"""
         <a href="https://scholar.google.com/citations?user={scholar_id}" class="social-btn" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Google_Scholar_logo.svg" class="icon-img"> 
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Google_Scholar_logo.svg" class="icon-img">
             Google Scholar
         </a>
     """, unsafe_allow_html=True)
@@ -106,7 +106,7 @@ with st.sidebar:
     st.divider()
 
 
-# 4. MAIN HEADER & STATS
+# --- 4. MAIN HEADER & STATS ---
 st.title("Academic & Research Portfolio")
 
 if author_data:
@@ -123,7 +123,7 @@ if author_data:
 
     st.divider()
 
-# 5. CONTENT TABS SECTION 
+# --- 5. CONTENT TABS SECTION ---
 tabs = st.tabs([
     "👤 About Me", 
     "🔬 Research Focus", 
@@ -860,13 +860,13 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
     
 
     
-    # Interactive Streamlit Chart
+    # Option A: Interactive Native Streamlit Chart
     st.subheader("Interactive DLTS Signal")
     # Set T as index for the native chart
     chart_df = df.set_index('T')
     st.line_chart(chart_df)
     
-    # Matplotlib (Better for Publications/Labels)
+    # Option B: Matplotlib (Better for Publications/Labels)
     st.subheader("Final DLTS Spectrum of a Silicon BJT")
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.plot(df['T'], df['RW4'], color='red', label='RW4 Signal')
@@ -877,16 +877,16 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
     
     st.pyplot(fig)
     
-    # Data Table of DLTS data
+    # Option C: Data Table
     with st.expander("Show Raw Data Table"):
         st.dataframe(df, use_container_width=True)
-
-    # 3D Model of the Boron-Vaccancy Defect in Silicon
 
     import numpy as np
     import plotly.graph_objects as go
     
+    # -----------------------------
     # Parameters
+    # -----------------------------
     a = 5.43
     n = 2
     si_size = 9
@@ -912,7 +912,9 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
         [0.75, 0.75, 0.25],
     ])
     
+    # -----------------------------
     # Build lattice
+    # -----------------------------
     atoms = []
     for i in range(n):
         for j in range(n):
@@ -922,7 +924,9 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
     
     atoms = np.array(atoms)
     
+    # -----------------------------
     # Choose defect sites
+    # -----------------------------
     center = atoms.mean(axis=0)
     dist = np.linalg.norm(atoms - center, axis=1)
     
@@ -941,7 +945,9 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
     mask[[b_index, vac_index]] = False
     silicon = atoms[mask]
     
+    # -----------------------------
     # Bonds (excluding vacancy)
+    # -----------------------------
     bond_x, bond_y, bond_z = [], [], []
     
     all_atoms = np.vstack([silicon, boron])
@@ -954,7 +960,9 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
                 bond_y += [all_atoms[i,1], all_atoms[j,1], None]
                 bond_z += [all_atoms[i,2], all_atoms[j,2], None]
     
+    # -----------------------------
     # Unit cell
+    # -----------------------------
     L = n * a
     edges = [
         ([0,L],[0,0],[0,0]), ([0,L],[L,L],[0,0]),
@@ -965,7 +973,9 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
         ([0,0],[L,L],[0,L]), ([L,L],[L,L],[0,L]),
     ]
     
+    # -----------------------------
     # Plot
+    # -----------------------------
     fig = go.Figure()
     
     # Bonds
@@ -1029,7 +1039,7 @@ with tabs[2]:
     st.caption("Data live-synced from Google Scholar (Fetching full metadata...)")
     
     all_pubs = author_data.get("publications", [])
-    all_pubs.sort(key=lambda x: x.get("bib", {}).get("pub_year", 0), reverse=True) 
+    all_pubs.sort(key=lambda x: x.get("bib", {}).get("pub_year", 0), reverse=True)
     
     for pub in all_pubs:
         # CRITICAL: This line fetches the missing authors and extra details
@@ -1064,7 +1074,7 @@ with tabs[2]:
             
             pub_id = pub.get("author_pub_id")
             link = f"https://scholar.google.com/citations?view_op=view_citation&user={scholar_id}&citation_for_view={pub_id}"
-            st.link_button("View on Google Scholar", link)
+            st.link_button("w={View on Google Scholar", link)
 
             
 
@@ -1101,10 +1111,13 @@ with tabs[4]:
     import pandas as pd
     import pydeck as pdk
     
+    # -----------------------------
     # Data Setup
+    # -----------------------------
+    # Coordinates for the institutions
     locations = pd.DataFrame([
         {
-            "name": "University of Pretoria (Gauteng, SA)",
+            "name": "Home Institution (Gauteng, SA)",
             "lat": -25.7479, 
             "lon": 28.2293,
             "color": [255, 0, 0, 200]  # Red
@@ -1117,6 +1130,7 @@ with tabs[4]:
         }
     ])
     
+    # Create the connection line (Arc)
     arc_data = pd.DataFrame([{
         "start_lat": -25.7479,
         "start_lon": 28.2293,
@@ -1124,8 +1138,10 @@ with tabs[4]:
         "end_lon": 39.5932
     }])
     
-
-    # PyDeck Map
+    # -----------------------------
+    # Plotly / PyDeck Map
+    # -----------------------------
+    
     view_state = pdk.ViewState(
         latitude=-7.0,
         longitude=34.0,
@@ -1133,6 +1149,7 @@ with tabs[4]:
         pitch=40
     )
     
+    # Layer for the institutions (Dots)
     scatter_layer = pdk.Layer(
         "ScatterplotLayer",
         locations,
@@ -1142,6 +1159,7 @@ with tabs[4]:
         pickable=True
     )
     
+    # Layer for the collaboration link (Arc)
     arc_layer = pdk.Layer(
         "ArcLayer",
         arc_data,
@@ -1152,14 +1170,12 @@ with tabs[4]:
         get_width=5,
     )
     
-    # If the map is blank on the website, change map_style to None 
-    # or use "pdk.map_styles.SATELLITE"
     r = pdk.Deck(
-            layers=[scatter_layer, arc_layer],
-            initial_view_state=view_state,
-            tooltip={"text": "{name}"},
-            map_style=None  # This removes the Mapbox requirement
-        )
+        layers=[scatter_layer, arc_layer],
+        initial_view_state=view_state,
+        tooltip={"text": "{name}"},
+        map_style="mapbox://styles/mapbox/light-v9"
+    )
     
     st.pydeck_chart(r)
     
@@ -1238,10 +1254,4 @@ with tabs[7]:
 with tabs[8]:
     st.subheader("Get in Touch")
     st.write("📍 Department of Physics, University of Pretoria")
-
     st.markdown("📧 **Email:** [nagessar.kaveer@gmail.com](mailto:nagessar.kaveer@gmail.com)")
-
-
-
-
-
