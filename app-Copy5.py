@@ -29,9 +29,9 @@ with st.sidebar:
     st.write("📍 Pretoria, South Africa")
     st.write("🏛️ University of Pretoria")
     st.write("🎓 Physics Honours Student and Aspiring Physicist")
+            
 
-
-
+    
     st.divider()
 
     # --- PROFESSIONAL BUTTONS SECTION ---
@@ -112,12 +112,12 @@ st.title("Academic & Research Portfolio")
 if author_data:
     # This creates the 4 columns for your metrics at the top
     col1, col2, col3, col4 = st.columns(4)
-
+    
     # Live stats from Google Scholar
     col1.metric("Citations", author_data.get("citedby", 0))
     col2.metric("h-index", author_data.get("hindex", 0))
     col3.metric("i10-index", author_data.get("i10index", 0))
-
+    
     # Manual stat from your ResearchGate/Bio
     col4.metric("RG Research Interest", "15.7") 
 
@@ -151,7 +151,7 @@ Kaveer also won 2nd Place nationally in the ARSO-SABS National Essay Competition
 with tabs[1]:
     st.subheader("Electronic Materials & Semiconductor Physics")
     st.write("Current focus: **Electrical Characterization of Defects in Silicon Bipolar Junction Transistors Under Electron Irradiation.**")
-
+    
     # Using a single markdown block with proper spacing
     st.markdown(r"""
 Deep Level Transient Spectroscopy (DLTS) is a powerful technique used to characterize electrically active defects in semiconductors. These defects can trap carriers and affect device performance, especially in high-radiation environments.
@@ -183,12 +183,12 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
 
 **Laplace DLTS** further improves the resolution to detect closely spaced defect levels, making it a powerful tool for studying defects in silicon BJTs.
     """)
-
+    
 
     import pandas as pd
     import io
     import matplotlib.pyplot as plt
-
+    
     # 1. THE DATA
     raw_data = """T	RW4
     349.81	2.73E-04
@@ -854,18 +854,18 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
     32.8085	-4.93E-03
     32.3605	-3.27E-03
     31.9125	-1.45E-03"""
-
+    
     # 2. PROCESSING
     df = pd.read_csv(io.StringIO(raw_data), sep='\t')
+    
 
-
-
+    
     # Option A: Interactive Native Streamlit Chart
     st.subheader("Interactive DLTS Signal")
     # Set T as index for the native chart
     chart_df = df.set_index('T')
     st.line_chart(chart_df)
-
+    
     # Option B: Matplotlib (Better for Publications/Labels)
     st.subheader("Final DLTS Spectrum of a Silicon BJT")
     fig, ax = plt.subplots(figsize=(10, 5))
@@ -874,16 +874,16 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
     ax.set_ylabel("Capacitance (RW4)")
     ax.grid(True, which='both', linestyle='--', alpha=0.5)
     ax.legend()
-
+    
     st.pyplot(fig)
-
+    
     # Option C: Data Table
     with st.expander("Show Raw Data Table"):
         st.dataframe(df, use_container_width=True)
 
     import numpy as np
     import plotly.graph_objects as go
-
+    
     # -----------------------------
     # Parameters
     # -----------------------------
@@ -893,13 +893,13 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
     b_size = 10
     vac_size = 10
     bond_cutoff = 2.6
-
+    
     # CPK colours
     SI_COLOR = "black"
     B_COLOR = "blue"
     VAC_COLOR = "red"
     BOND_COLOR = "gray"
-
+    
     # Diamond cubic basis
     basis = np.array([
         [0,   0,   0],
@@ -911,7 +911,7 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
         [0.75, 0.25, 0.75],
         [0.75, 0.75, 0.25],
     ])
-
+    
     # -----------------------------
     # Build lattice
     # -----------------------------
@@ -921,37 +921,37 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
             for k in range(n):
                 for b in basis:
                     atoms.append(a * (b + [i, j, k]))
-
+    
     atoms = np.array(atoms)
-
+    
     # -----------------------------
     # Choose defect sites
     # -----------------------------
     center = atoms.mean(axis=0)
     dist = np.linalg.norm(atoms - center, axis=1)
-
+    
     # Boron substitution (closest to center)
     b_index = np.argmin(dist)
     boron = atoms[b_index]
-
+    
     # Vacancy = nearest neighbour to boron
     dist_to_b = np.linalg.norm(atoms - boron, axis=1)
     dist_to_b[b_index] = np.inf
     vac_index = np.argmin(dist_to_b)
     vacancy = atoms[vac_index]
-
+    
     # Remaining silicon atoms
     mask = np.ones(len(atoms), dtype=bool)
     mask[[b_index, vac_index]] = False
     silicon = atoms[mask]
-
+    
     # -----------------------------
     # Bonds (excluding vacancy)
     # -----------------------------
     bond_x, bond_y, bond_z = [], [], []
-
+    
     all_atoms = np.vstack([silicon, boron])
-
+    
     for i in range(len(all_atoms)):
         for j in range(i + 1, len(all_atoms)):
             d = np.linalg.norm(all_atoms[i] - all_atoms[j])
@@ -959,7 +959,7 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
                 bond_x += [all_atoms[i,0], all_atoms[j,0], None]
                 bond_y += [all_atoms[i,1], all_atoms[j,1], None]
                 bond_z += [all_atoms[i,2], all_atoms[j,2], None]
-
+    
     # -----------------------------
     # Unit cell
     # -----------------------------
@@ -972,12 +972,12 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
         ([0,0],[0,0],[0,L]), ([L,L],[0,0],[0,L]),
         ([0,0],[L,L],[0,L]), ([L,L],[L,L],[0,L]),
     ]
-
+    
     # -----------------------------
     # Plot
     # -----------------------------
     fig = go.Figure()
-
+    
     # Bonds
     fig.add_trace(go.Scatter3d(
         x=bond_x, y=bond_y, z=bond_z,
@@ -985,7 +985,7 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
         line=dict(color=BOND_COLOR, width=4),
         name="Bonds"
     ))
-
+    
     # Silicon atoms
     fig.add_trace(go.Scatter3d(
         x=silicon[:,0], y=silicon[:,1], z=silicon[:,2],
@@ -993,7 +993,7 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
         marker=dict(size=si_size, color=SI_COLOR),
         name="Si"
     ))
-
+    
     # Boron atom
     fig.add_trace(go.Scatter3d(
         x=[boron[0]], y=[boron[1]], z=[boron[2]],
@@ -1001,7 +1001,7 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
         marker=dict(size=b_size, color=B_COLOR),
         name="B"
     ))
-
+    
     # Vacancy marker (explicit)
     fig.add_trace(go.Scatter3d(
         x=[vacancy[0]], y=[vacancy[1]], z=[vacancy[2]],
@@ -1009,7 +1009,7 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
         marker=dict(size=vac_size, color=VAC_COLOR, symbol="x"),
         name="Vacancy"
     ))
-
+    
     # Unit cell
     for e in edges:
         fig.add_trace(go.Scatter3d(
@@ -1018,7 +1018,7 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
             line=dict(color="black", width=2),
             showlegend=False
         ))
-
+    
     fig.update_layout(
         title="Silicon Lattice with Boron-Vaccancy Defect",
         scene=dict(
@@ -1028,73 +1028,63 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
             zaxis_visible=False
         )
     )
-
+    
     st.plotly_chart(fig)
 
-
+    
 
 #--- TAB 3: PUBLICATIONS ---
 with tabs[2]:
     st.subheader("Full Publication List")
     st.caption("Data live-synced from Google Scholar (Fetching full metadata...)")
-
-    if not author_data or "publications" not in author_data:
-        st.error("Publication data not available. Google Scholar may have blocked the request.")
-        st.stop()
-
+    
     all_pubs = author_data.get("publications", [])
-    all_pubs.sort(
-        key=lambda x: int(x.get("bib", {}).get("pub_year", 0) or 0),
-        reverse=True
-    )
-
+    all_pubs.sort(key=lambda x: x.get("bib", {}).get("pub_year", 0), reverse=True)
+    
     for pub in all_pubs:
-        # Fetch missing metadata (authors, abstract, venue, etc.)
-        full_pub = scholarly.fill(pub)
+        # CRITICAL: This line fetches the missing authors and extra details
+        # Note: This may slow down the app if you have 100+ publications
+        full_pub = scholarly.fill(pub) 
         bib = full_pub.get("bib", {})
-
-        year = bib.get("pub_year", "N/A")
-        title = bib.get("title", "Unknown Title")
-
+        
+        # Format title and year for the expander
+        year = bib.get('pub_year', 'N/A')
+        title = bib.get('title', 'Unknown Title')
+        
         with st.expander(f"({year}) {title}"):
-            authors = bib.get("author", "K. Nagessar").replace(" and ", ", ")
+            # Full author list is now available in bib.get('author')
+            authors = bib.get('author', 'K. Nagessar').replace(" and ", ", ")
             st.write(f"**Authors:** {authors}")
-
-            venue = bib.get("journal") or bib.get("venue") or "Publication Venue"
+            
+            # Additional details now available after .fill()
+            venue = bib.get('journal', bib.get('venue', 'Publication Venue'))
             st.write(f"**Source:** *{venue}*")
-
+            
             col1, col2, col3 = st.columns(3)
             with col1:
-                if bib.get("volume"):
-                    st.write(f"**Volume:** {bib['volume']}")
+                if bib.get('volume'): st.write(f"**Volume:** {bib['volume']}")
             with col2:
-                if bib.get("number"):
-                    st.write(f"**Issue:** {bib['number']}")
+                if bib.get('number'): st.write(f"**Issue:** {bib['number']}")
             with col3:
-                if bib.get("pages"):
-                    st.write(f"**Pages:** {bib['pages']}")
+                if bib.get('pages'): st.write(f"**Pages:** {bib['pages']}")
 
-            if bib.get("abstract"):
+            if bib.get('abstract'):
                 st.write("**Abstract:**")
-                st.write(bib["abstract"])
-
+                st.write(bib.get('abstract'))
+            
             pub_id = pub.get("author_pub_id")
-            link = (
-                f"https://scholar.google.com/citations"
-                f"?view_op=view_citation&user={scholar_id}"
-                f"&citation_for_view={scholar_id}:{pub_id}"
-            )
-
+            link = f"https://scholar.google.com/citations?view_op=view_citation&user={scholar_id}&citation_for_view={pub_id}"
             st.link_button("View on Google Scholar", link)
 
+            
 
-
+            
 # --- TAB 4: EDUCATION ---
 with tabs[3]: 
     st.subheader("Academic Background")
-
+    
     col_edu, col_logo = st.columns([2, 1])
-
+    
     with col_edu:
         st.markdown("""
         ### **University of Pretoria**
@@ -1117,10 +1107,10 @@ with tabs[3]:
 with tabs[4]:
     st.subheader("Research Visits & Collaborations")
     st.write("Details of institutional visits and collaborative research projects.")
-
+    
     import pandas as pd
     import pydeck as pdk
-
+    
     # -----------------------------
     # Data Setup
     # -----------------------------
@@ -1138,14 +1128,14 @@ with tabs[4]:
             "color": [0, 0, 255, 200]  # Blue
         }
     ])
-
+    
     arc_data = pd.DataFrame([{
         "start_lat": -25.7479,
         "start_lon": 28.2293,
         "end_lat": 11.8288,
         "end_lon": 39.5932
     }])
-
+    
     # -----------------------------
     # PyDeck Map
     # -----------------------------
@@ -1175,16 +1165,17 @@ with tabs[4]:
         get_width=5,
     )
     
+    # If the map is blank on the website, change map_style to None 
+    # or use "pdk.map_styles.SATELLITE"
     r = pdk.Deck(
-        layers=[scatter_layer, arc_layer],
-        initial_view_state=view_state,
-        tooltip={"text": "{name}"},
-        map_style=None  # removes Mapbox requirement
-    )
+            layers=[scatter_layer, arc_layer],
+            initial_view_state=view_state,
+            tooltip={"text": "{name}"},
+            map_style=None  # This removes the Mapbox requirement
+        )
     
     st.pydeck_chart(r)
-
-
+    
 
 # --- TAB 6: TEACHING ---
 with tabs[5]:
@@ -1198,16 +1189,16 @@ with tabs[5]:
 
 # --- TAB 7: SKILLS ---
 with tabs[6]:
-
+ 
     # Research Skills Section
     st.markdown("### **Research Skills**")
     st.markdown("---")
     col_res1, col_res2 = st.columns(2)
-
+    
     with col_res1:
         st.write("**Theory & Physics**")
         st.write("- Semiconductor Physics\n- Theory of Defects\n- Radiation Physics")
-
+    
     with col_res2:
         st.write("**Characterization Techniques**")
         st.write("- I–V (Current-Voltage) & C–V (Capacitance-Voltage) measurements")
@@ -1219,11 +1210,11 @@ with tabs[6]:
     st.markdown("### **Technical Skills**")
     st.markdown("---")
     col_tech1, col_tech2 = st.columns(2)
-
+    
     with col_tech1:
         st.write("**Programming & Markup**")
         st.write("- Python, SageMath, Delphi, and LaTeX")
-
+    
     with col_tech2:
         st.write("**Software**")
         st.write("- Microsoft Office (Word, Excel, PowerPoint)")
@@ -1232,24 +1223,24 @@ with tabs[6]:
     st.markdown("### **Languages**")
     st.markdown("---")
     l_col1, l_col2 = st.columns(2)
-
+    
     with l_col1:
         st.write("**English:** Home language")
         st.write("**Afrikaans:** Fair proficiency (studied as First Additional Language)")
-
+        
     with l_col2:
         st.write("**French:** Fair proficiency (**DELF B1** certified)")
         st.write("**Hindi:** Basic proficiency (Self-studied)")
-
+        
 # Social Media / Department Section
     st.markdown("### **Social Media Management**")
     st.markdown("---")
-
+    
     st.write("📸 **Managed Content:** University of Pretoria Physics Department Instagram Page")
-
+    
     # Replace the URL with the actual handle if different
     st.link_button("🌐 Visit UP Physics on Instagram", "https://www.instagram.com/up_tuks_physics/")
-
+        
 # --- TAB 8: AWARDS ---
 with tabs[7]:
     st.subheader("Awards & Recognition")
