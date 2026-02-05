@@ -1134,8 +1134,8 @@ with tabs[3]:
 
 # --- TAB 5: RESEARCH VISITS ---
 with tabs[4]:
-    st.subheader("Research Visits & Collaborations")
-    st.write("Details of institutional visits and collaborative research projects.")
+    st.subheader("Research Collaborations")
+    st.write("Details of collaborative research projects.")
     
     import pandas as pd
     import pydeck as pdk
@@ -1282,6 +1282,7 @@ with tabs[8]:
     st.write("📍 Department of Physics, University of Pretoria")
 
     st.markdown("📧 **Email:** [nagessar.kaveer@gmail.com](mailto:nagessar.kaveer@gmail.com)")
+
 
 
 
