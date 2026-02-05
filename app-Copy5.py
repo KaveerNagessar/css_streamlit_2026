@@ -886,9 +886,7 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
     import numpy as np
     import plotly.graph_objects as go
     
-    # -----------------------------
     # Parameters
-    # -----------------------------
     a = 5.43
     n = 2
     si_size = 9
@@ -914,9 +912,7 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
         [0.75, 0.75, 0.25],
     ])
     
-    # -----------------------------
     # Build lattice
-    # -----------------------------
     atoms = []
     for i in range(n):
         for j in range(n):
@@ -926,9 +922,7 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
     
     atoms = np.array(atoms)
     
-    # -----------------------------
     # Choose defect sites
-    # -----------------------------
     center = atoms.mean(axis=0)
     dist = np.linalg.norm(atoms - center, axis=1)
     
@@ -947,9 +941,7 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
     mask[[b_index, vac_index]] = False
     silicon = atoms[mask]
     
-    # -----------------------------
     # Bonds (excluding vacancy)
-    # -----------------------------
     bond_x, bond_y, bond_z = [], [], []
     
     all_atoms = np.vstack([silicon, boron])
@@ -962,9 +954,7 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
                 bond_y += [all_atoms[i,1], all_atoms[j,1], None]
                 bond_z += [all_atoms[i,2], all_atoms[j,2], None]
     
-    # -----------------------------
     # Unit cell
-    # -----------------------------
     L = n * a
     edges = [
         ([0,L],[0,0],[0,0]), ([0,L],[L,L],[0,0]),
@@ -975,9 +965,7 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
         ([0,0],[L,L],[0,L]), ([L,L],[L,L],[0,L]),
     ]
     
-    # -----------------------------
     # Plot
-    # -----------------------------
     fig = go.Figure()
     
     # Bonds
@@ -1252,6 +1240,7 @@ with tabs[8]:
     st.write("📍 Department of Physics, University of Pretoria")
 
     st.markdown("📧 **Email:** [nagessar.kaveer@gmail.com](mailto:nagessar.kaveer@gmail.com)")
+
 
 
 
