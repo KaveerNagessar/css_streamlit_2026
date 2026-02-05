@@ -11,7 +11,7 @@ st.set_page_config(
 )
 
 
-
+# 2. CITATIONS
 @st.cache_data(ttl=86400)
 def get_scholar_data(scholar_id):
     try:
@@ -1047,9 +1047,9 @@ From this, both the activation energy $E_T$ and the capture cross-section $\sigm
 with tabs[2]:
     st.subheader("Full Publication List")
     
-    # 1. HARDCODED FALLBACK DATA (Because Scholar can be unreliable)
-    # This ensures your profile always looks professional
-    manual_pubs = [
+    # 1. HARDCODED FALLBACK DATA (Because Scholar can be not working sometimes)
+
+        manual_pubs = [
         {
             "year": 2025,
             "title": "Advanced thermal and magnetic materials for high-power and high-temperature applications: a comprehensive review",
@@ -1082,7 +1082,7 @@ with tabs[2]:
         }
     ]
 
-    # 2. LOGIC: Try live data first, then manual
+    # Try live data first, then manual
     if author_data and "publications" in author_data and len(author_data["publications"]) > 0:
         all_pubs = author_data.get("publications", [])
         all_pubs.sort(key=lambda x: x.get("bib", {}).get("pub_year", 0), reverse=True)
@@ -1282,6 +1282,7 @@ with tabs[8]:
     st.write("📍 Department of Physics, University of Pretoria")
 
     st.markdown("📧 **Email:** [nagessar.kaveer@gmail.com](mailto:nagessar.kaveer@gmail.com)")
+
 
 
 
