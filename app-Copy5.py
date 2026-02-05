@@ -1146,7 +1146,7 @@ with tabs[4]:
         zoom=3,
         pitch=40
     )
-
+    
     scatter_layer = pdk.Layer(
         "ScatterplotLayer",
         locations,
@@ -1155,7 +1155,7 @@ with tabs[4]:
         get_radius=150000,
         pickable=True
     )
-
+    
     arc_layer = pdk.Layer(
         "ArcLayer",
         arc_data,
@@ -1165,22 +1165,16 @@ with tabs[4]:
         get_target_color=[0, 0, 255, 150],
         get_width=5,
     )
-
-    # If the map is blank on the website, change map_style to None 
-    # or use "pdk.map_styles.SATELLITE"
+    
     r = pdk.Deck(
         layers=[scatter_layer, arc_layer],
         initial_view_state=view_state,
         tooltip={"text": "{name}"},
-        map_style="mapbox://styles/mapbox/navigation-day-v1" 
+        map_style=None  # removes Mapbox requirement
     )
-            layers=[scatter_layer, arc_layer],
-            initial_view_state=view_state,
-            tooltip={"text": "{name}"},
-            map_style=None  # This removes the Mapbox requirement
-        )
-
+    
     st.pydeck_chart(r)
+
 
 
 # --- TAB 6: TEACHING ---
@@ -1259,3 +1253,4 @@ with tabs[8]:
     st.write("📍 Department of Physics, University of Pretoria")
 
     st.markdown("📧 **Email:** [nagessar.kaveer@gmail.com](mailto:nagessar.kaveer@gmail.com)")
+
