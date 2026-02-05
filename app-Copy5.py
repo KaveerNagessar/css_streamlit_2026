@@ -11,17 +11,44 @@ st.set_page_config(
 )
 
 # 2. DATA FETCHING FUNCTION (Cached for 24 hours)
+import streamlit as st
+from scholarly import scholarly, ProxyGenerator
+
+# Google Scholar aggressively blocks standard requests. 
+# Free proxies are unreliable; consider a ScraperAPI or similar for production.
+@st.cache_resource
+def setup_proxy():
+    pg = ProxyGenerator()
+    # If you have a ScraperAPI key: pg.ScraperAPI('YOUR_KEY')
+    # Otherwise, try a free proxy (might be slow/unstable):
+    success = pg.FreeProxies() 
+    if success:
+        scholarly.use_proxy(pg)
+
+setup_proxy()
+
 @st.cache_data(ttl=86400)
 def get_scholar_data(scholar_id):
     try:
+        # Search for the author by ID
         author = scholarly.search_author_id(scholar_id)
-        return scholarly.fill(author)
-    except Exception:
+        # Fill the author object with citations and publications
+        # 'sections' limits the data to keep it fast
+        full_author = scholarly.fill(author, sections=['basics', 'indices', 'counts'])
+        return full_author
+    except Exception as e:
+        st.error(f"Error fetching data: {e}")
         return None
 
 # Your Google Scholar ID
 scholar_id = "GIBw1REAAAAJ"
 author_data = get_scholar_data(scholar_id)
+
+if author_data:
+    st.title(author_data.get('name', 'Author Profile'))
+    st.write(f"Citations: {author_data.get('citedby', 0)}")
+else:
+    st.warning("No data found. Check the ID or try again later.")
 
 # 3. SIDEBAR (Professional Social & Contact)
 with st.sidebar:
@@ -1250,6 +1277,7 @@ with tabs[8]:
     st.write("📍 Department of Physics, University of Pretoria")
 
     st.markdown("📧 **Email:** [nagessar.kaveer@gmail.com](mailto:nagessar.kaveer@gmail.com)")
+
 
 
 
